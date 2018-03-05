@@ -19,7 +19,9 @@ namespace bootcamp_3tiers.Controllers
     {
         private List<Details> detailsList = new List<Details>
         {
-            new Details { FirstName = "", LastName = "", Age = 1, Nationality = "" }
+            new Details { FirstName = "Pam", LastName = "Naylor", Age = 29, Nationality = "British" },
+            new Details { FirstName = "James", LastName = "Whiteley", Age = 21, Nationality = "British" },
+            new Details { FirstName = "Moh Moh", LastName = "Oo", Age = 33, Nationality = "Burmese" }
         };
 
         public IEnumerable<Details> GetDetails()
@@ -29,10 +31,15 @@ namespace bootcamp_3tiers.Controllers
     }
     public class ValuesController : ApiController
     {
-        // GET api/values
-        public IEnumerable<string> Get()
+        private DetailsRepository repo = new DetailsRepository();
+        public ValuesController()
         {
-            return new string[] { "value1", "value2" };
+
+        }
+            // GET api/values
+        public IEnumerable<Details> Get()
+        {
+            return repo.GetDetails();
         }
 
 
