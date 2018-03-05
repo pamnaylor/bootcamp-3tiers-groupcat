@@ -15,9 +15,5 @@ namespace bootcamp_3tiers.Controllers
             return View();
         }
 
-        public ActionResult List()
-        {
-
-        }
     }
 }

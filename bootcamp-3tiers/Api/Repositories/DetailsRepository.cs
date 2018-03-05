@@ -6,7 +6,20 @@ using System.Web;
 
 namespace Api.Repositories
 {
-    public class DetailsRepository
+    public class Result<T>
+    {
+        public T Output { get; set; }
+
+        public string Message { get; set; }
+    }
+
+    public interface IDetailsRepository
+    {
+        IEnumerable<Details> GetDetails();
+
+        Result<Details> GetDetails(int id);
+    }
+    public class DetailsRepository : IDetailsRepository
     {
         private List<Details> detailsList = new List<Details>
         {
@@ -18,6 +31,25 @@ namespace Api.Repositories
         public IEnumerable<Details> GetDetails()
         {
             return detailsList;
+        }
+
+        public Result<Details> GetDetails(int id)
+        {
+            var found = detailsList.SingleOrDefault(d => d.Id == id); 
+            if (found != null)
+            {
+                return new Result<Details>
+                {
+                    Message = "Successfully retrieved",
+                    Output = found
+                };
+            }
+
+            return new Result<Details>
+            {
+                Message = "Item not found",
+                Output = null
+            };
         }
     }
 }

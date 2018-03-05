@@ -25,9 +25,17 @@ namespace Api.Controllers
 
 
         // GET api/values/5
-        public string Get(int id)
+        public HttpResponseMessage Get(int id)
         {
-            return "value";
+            var result = repo.GetDetails(id);
+
+            if (result.Output != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, result.Output);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.NotFound, result.Message);
+           
         }
     }
 }
