@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 
 namespace bootcamp_3tiers.Controllers
@@ -15,5 +12,11 @@ namespace bootcamp_3tiers.Controllers
             return View();
         }
 
+        public ActionResult List()
+        {
+            DetailsRepository details = new DetailsRepository();
+            var userDetails = details.GetDetails();
+            return View(userDetails);
+        }
     }
 }
