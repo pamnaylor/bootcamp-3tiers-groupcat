@@ -13,10 +13,10 @@
         </th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var user in Model) {
     <tr>
         <td>
-            @Html.ActionLink($"{item.FirstName} {item.LastName}", "Details", new { id=item.Id }) |
+            @Html.ActionLink($"{user.FirstName} {user.LastName}", "Details", new { id= user.Id }) |
         </td>
     </tr>
 }
