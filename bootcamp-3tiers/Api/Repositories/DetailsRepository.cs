@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using Dapper;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace Api.Repositories
 {
@@ -28,22 +30,47 @@ namespace Api.Repositories
             new Details { Id = 3, FirstName = "Moh Moh", LastName = "Oo", Age = 33, Nationality = "Burmese" }
         };
 
+        private string connectionString = ConfigurationManager.ConnectionStrings["database"].ConnectionString;
+
         public IEnumerable<Details> GetDetails()
         {
-            return detailsList;
+            using (var conn = new SqlConnection(connectionString))
+            {
+                return conn.Query<Details>(
+                    @"SELECT [Id]
+      ,[FirstName]
+      ,[LastName]
+      ,[Age]
+      ,[Nationality]
+  FROM [BootcampExcercise].[dbo].[Details]");
+            }
+            //return detailsList;
         }
 
         public Result<Details> GetDetails(int id)
         {
-            var found = detailsList.SingleOrDefault(d => d.Id == id); 
-            if (found != null)
+            using (var conn = new SqlConnection(connectionString))
             {
-                return new Result<Details>
+                var found = conn.QueryFirst<Details>(
+                    @"SELECT [Id]
+      ,[FirstName]
+      ,[LastName]
+      ,[Age]
+      ,[Nationality]
+  FROM [BootcampExcercise].[dbo].[Details]
+  WHERE Id = @Id", new { Id = id });
+
+                if (found != null)
                 {
-                    Message = "Successfully retrieved",
-                    Output = found
-                };
+                    return new Result<Details>
+                    {
+                        Message = "Successfully retrieved",
+                        Output = found
+                    };
+                }
             }
+
+            
 
             return new Result<Details>
             {
